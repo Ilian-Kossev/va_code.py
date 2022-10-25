@@ -18,7 +18,7 @@ from face_recog import run_facial_recognition, add_face_to_faces_folder, availab
 # assistant's presentation
 words = f'I am Jenny, your personal voice assistant. I can tell the time, play videos from youtube, ' \
         f'give information about current weather conditions in major' \
-        f'cities around the world and tell jokes.'
+        f'cities around the world, perform searches in wikipedia and tell jokes.'
 
 # create an instance of the Recognizer class from speech_recognition library
 listener = sr.Recognizer()
