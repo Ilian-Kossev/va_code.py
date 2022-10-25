@@ -90,9 +90,11 @@ def get_user_name() -> str:
 
 
 def command_is_valid(text: str) -> bool:
-    valid_commands = {'play', 'time', 'joke', 'bye', 'goodbye', 'bye-bye', 'weather', 'who', 'what', 'about'}
-    if text in valid_commands:
-        return True
+    # list of valid commands
+    valid_commands = ['play', 'time', 'joke', 'bye', 'goodbye', 'bye-bye', 'weather', 'who', 'what', 'about']
+    for word in valid_commands:
+        if word in text:
+            return True
 
 
 def accept_command() -> str or None:
@@ -172,12 +174,16 @@ def run_alexa():
         return
 
     if 'play' in command:
+        program_active = False
         # plays a song from youtube and terminates the program
         song = command.replace('play', '')
         talk('playing' + song)
         pwk.playonyt(song)
+        if current_user_name is None:
+            talk('I am glad to be of service. Have a nice day!')
+            return
         talk(f'I am glad to be of service. Have a nice day{current_user_name}!')
-        sys.exit()
+        return
     elif 'time' in command:
         # tells the time
         current_time = datetime.datetime.now().strftime('%I:%M %p')
@@ -189,17 +195,19 @@ def run_alexa():
         return
     elif 'bye' in command:
         # terminates the program
+        program_active = False
         if current_user_name is None:
             talk('I am glad to be of service. Have a nice day!')
-            sys.exit()
+            return
         talk(f'I am glad to be of service. Have a nice day{current_user_name}!')
-        sys.exit()
+        return
     elif 'weather' in command:
         # gives current weather for chosen city
         city_name = command.split('in')[1]
         x = get_weather_info(city_name)
         for item in x:
             talk(item)
+        return
     # checks if we have a wikipedia command.
     command_sentence = command.split()
     for word in command_sentence:
